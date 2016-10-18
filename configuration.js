@@ -49,12 +49,12 @@ module.exports = (function() {
     */
 
     DEFAULTS: {
-      title: 'MyPads',
+      title: 'Igalia Pads',
       rootUrl: '',
       allowEtherPads: true,
-      passwordMin: 8,
-      passwordMax: 30,
-      languages: { en: 'English', fr: 'Français' },
+      passwordMin: 5,
+      passwordMax: 50,
+      languages: { en: 'English' },
       defaultLanguage: 'en',
       HTMLExtraHead: '',
       checkMails: false,
