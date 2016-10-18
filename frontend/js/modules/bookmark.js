@@ -137,13 +137,6 @@ module.exports = (function () {
   view.groups = ld.partialRight(view._items, 'groups', conf.LANG.GROUP.NONE);
   view.pads = ld.partialRight(view._items, 'pads', conf.LANG.GROUP.PAD.NONE);
 
-  view.aside = function () {
-    return m('section.user-aside', [
-      m('h2', conf.LANG.ACTIONS.HELP),
-      m('article.well', m.trust(conf.LANG.BOOKMARK.HELP))
-    ]);
-  };
-
   view.main = function (c) {
     return m('section', [
       m('h2', conf.LANG.BOOKMARK.TITLE),
@@ -163,7 +156,7 @@ module.exports = (function () {
   };
 
   bookmark.view = function (c) {
-    return layout.view(view.main(c), view.aside(c));
+    return layout.view(view.main(c));
   };
 
   return bookmark;

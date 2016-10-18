@@ -420,16 +420,8 @@ module.exports = (function () {
     return m('section', { class: 'block-group user admin' }, elements);
   };
 
-  view.aside = function () {
-    var helpKey = (auth.isAdmin() ? 'HELP_SETTINGS' : 'HELP_LOGIN');
-    return m('section.user-aside', [
-      m('h2', conf.LANG.ACTIONS.HELP),
-      m('article.well', m.trust(conf.LANG.ADMIN[helpKey]))
-    ]);
-  };
-
   admin.view = function (c) {
-    return layout.view(view.main(c), view.aside(c));
+    return layout.view(view.main(c));
   };
 
   return admin;

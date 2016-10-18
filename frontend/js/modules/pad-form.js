@@ -243,15 +243,8 @@ module.exports = (function () {
     ]);
   };
 
-  view.aside = function () {
-    return m('section.user-aside', [
-      m('h2', conf.LANG.ACTIONS.HELP),
-      m('article.well', m.trust(conf.LANG.GROUP.ADD_HELP))
-    ]);
-  };
-
   pf.view = function (c) {
-    return layout.view(view.main(c), view.aside(c));
+    return layout.view(view.main(c));
   };
 
   return pf;

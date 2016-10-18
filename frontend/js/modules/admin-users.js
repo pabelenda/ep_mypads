@@ -145,15 +145,8 @@ module.exports = (function () {
     return m('section', { class: 'block-group user admin' }, elements);
   };
 
-  view.aside = function () {
-    return m('section.user-aside', [
-      m('h2', conf.LANG.ACTIONS.HELP),
-      m('article', m.trust(conf.LANG.ADMIN.HELP_USERS))
-    ]);
-  };
-
   admin.view = function (c) {
-    return layout.view(view.main(c), view.aside(c));
+    return layout.view(view.main(c));
   };
 
   return admin;

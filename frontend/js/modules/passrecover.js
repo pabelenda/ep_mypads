@@ -148,7 +148,7 @@ module.exports = (function () {
   };
 
   passrec.view = function (c) {
-    return layout.view(view.main(c), user.view.aside.common(c));
+    return layout.view(view.main(c));
   };
 
 

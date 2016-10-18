@@ -339,29 +339,6 @@ module.exports = (function () {
     return fields;
   };
 
-  /**
-  * ### aside view
-  *
-  * `aisde` views :
-  *
-  * - `common`, used for login and subscription pages
-  * - `profile`, as expected for profile page.
-  */
-
-  user.view.aside = {
-    common: function () {
-      return m('section.user-aside', [
-        m('h2', conf.SERVER.title),
-        m('article.well', m.trust(conf.LANG.GLOBAL.DESCRIPTION))
-      ]);
-    },
-    profile: function () {
-      return m('section.user-aside', [
-        m('h2', conf.LANG.ACTIONS.HELP),
-        m('article.well', m.trust(conf.LANG.USER.HELP.PROFILE)) ]);
-    }
-  };
-
   return user;
 
 }).call(this);

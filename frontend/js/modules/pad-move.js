@@ -203,15 +203,8 @@ module.exports = (function () {
     ]);
   };
 
-  view.aside = function () {
-    return m('section.user-aside', [
-      m('h2', conf.LANG.ACTIONS.HELP),
-      m('article.well', m.trust(conf.LANG.GROUP.PAD.MOVE_HELP))
-    ]);
-  };
-
   move.view = function (c) {
-    return layout.view(view.main(c), view.aside(c));
+    return layout.view(view.main(c));
   };
 
 

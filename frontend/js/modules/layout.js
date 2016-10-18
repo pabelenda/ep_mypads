@@ -65,11 +65,6 @@ module.exports = (function () {
           txt: conf.LANG.MENU.USERLIST
         },
         {
-          route: '/myprofile',
-          icon: 'home',
-          txt: conf.LANG.MENU.PROFILE
-        },
-        {
           route: '/logout',
           icon: 'off',
           txt: conf.LANG.MENU.LOGOUT
@@ -97,11 +92,6 @@ module.exports = (function () {
           route: '/login',
           icon: 'lock',
           txt: conf.LANG.USER.LOGIN
-        },
-        {
-          route: '/subscribe',
-          icon: 'user',
-          txt: conf.LANG.USER.SUBSCRIBE
         }
       ]
     };
@@ -135,19 +125,7 @@ module.exports = (function () {
   layout.view = function (main, aside) {
     return [
       m('header', [
-        m('ul.lang.container', ld.reduce(conf.SERVER.languages,
-          function (memo, val, key) {
-            var cls = (key === conf.USERLANG) ? 'active': '';
-            memo.push(m('li', {
-              class: cls,
-              onclick: conf.updateLang.bind(null, key)
-            }, val));
-            return memo;
-          }, [])
-        ),
         m('div.container.ombre', [
-          m('h1', conf.SERVER.title),
-          m('hr.trait', {role: 'presentation'}),
           m('nav', { class: 'menu-main' }, [
             m('ul.nav.nav-tabs', views.menuMain())
           ])

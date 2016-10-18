@@ -140,17 +140,14 @@ module.exports = (function () {
   view.main = function (c) {
     return m('section', { class: 'user' }, [
       m('h2', [
-        m('span', conf.LANG.USER.FORM),
-        m('a.small',
-          { href: '/subscribe', config: m.route },
-          conf.LANG.USER.ORSUB)
+        m('span', conf.LANG.USER.FORM)
       ]),
       view.form(c)
     ]);
   };
 
   login.view = function (c) {
-    return layout.view(view.main(c), user.view.aside.common(c));
+    return layout.view(view.main(c));
   };
   return login;
 }).call(this);

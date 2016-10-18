@@ -262,21 +262,8 @@ module.exports = (function () {
     ]);
   };
 
-  /**
-  * ### aside
-  *
-  * aside function, here some help and explanation
-  */
-
-  view.aside = function () {
-    return m('section.user-aside', [
-      m('h2', conf.LANG.ACTIONS.HELP),
-      m('article.well', m.trust(conf.LANG.GROUP.PAD.VIEW_HELP))
-    ]);
-  };
-
   pad.view = function (c) {
-    return layout.view(view.main(c), view.aside());
+    return layout.view(view.main(c));
   };
 
   return pad;

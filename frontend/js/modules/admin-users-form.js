@@ -128,17 +128,9 @@ module.exports = (function () {
     return m('section', { class: 'user' }, elements);
   };
 
-  view.aside = function () {
-    return m('section.user-aside', [
-      m('h2', conf.LANG.ACTIONS.HELP),
-      m('article.well', m.trust(conf.LANG.ADMIN.HELP_USER_EDIT))
-    ]);
-  };
-
   admin.view = function (c) {
     return layout.view(
-      view.main(c),
-      view.aside()
+      view.main(c)
     );
   };
 
