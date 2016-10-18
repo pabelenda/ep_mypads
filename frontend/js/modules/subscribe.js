@@ -102,38 +102,6 @@ module.exports = (function () {
     */
 
     c.submit.subscribe = function (e) {
-      e.preventDefault();
-      if (c.data.password() !== c.data.passwordConfirm()) {
-        notif.warning({ body: conf.LANG.USER.ERR.PASSWORD_MISMATCH });
-        document.querySelector('input[name="passwordConfirm"]').focus();
-      } else {
-        m.request({
-          method: 'POST',
-          url: conf.URLS.USER,
-          data: c.data
-        }).then(function (resp) {
-          if (!resp.value.active) {
-            var msg = conf.LANG.USER.AUTH.SUBSCRIBE_CONFIRM_SUCCESS;
-            m.route('/');
-            return notif.success({ body: msg });
-          } else {
-            auth.userInfo(resp.value);
-            notif.success({ body: conf.LANG.USER.AUTH.SUBSCRIBE_SUCCESS });
-          }
-          var lang = auth.userInfo().lang;
-          if (lang !== conf.USERLANG) {
-            conf.updateLang(lang);
-          }
-          m.request({
-            method: 'POST',
-            url: conf.URLS.LOGIN,
-            data: c.data
-          }).then(function (resp) {
-            localStorage.setItem('token', resp.token);
-            m.route('/');
-          }, errfn);
-        }, errfn);
-      }
     };
 
     /**
@@ -256,102 +224,6 @@ module.exports = (function () {
   */
 
   view.form = function (c) {
-    var fields = ld.reduce(c.fields, function (memo, f) {
-      memo[f] = user.view.field[f](c);
-      return memo;
-    }, {});
-    if (c.adminView()) {
-      delete fields.password.input.attrs.required;
-      delete fields.passwordConfirm.input.attrs.required;
-    }
-    var requiredFields = [
-      m('.form-group', [
-        fields.email.label, fields.email.icon,
-        m('.col-sm-7', fields.email.input)
-      ]),
-      m('.form-group', [
-        fields.password.label, fields.password.icon,
-          m('.col-sm-7', fields.password.input)
-      ]),
-      m('.form-group', [
-        fields.passwordConfirm.label, fields.passwordConfirm.icon,
-        m('.col-sm-7', fields.passwordConfirm.input)
-      ]),
-      m('.form-group', [
-        fields.lang.label, fields.lang.icon,
-        m('.col-sm-7', fields.lang.select)
-      ])
-    ];
-    if (c.profileView()) {
-      var passC = user.view.field.passwordCurrent(c);
-      passC.input.attrs.config = form.focusOnInit;
-      requiredFields.splice(1, 0,
-        m('.form-group', [
-          passC.label, passC.icon,
-          m('.col-sm-7', passC.input)
-        ]
-      ));
-      requiredFields.push(
-        m('.form-group', [
-          m('.col-sm-7.col-sm-offset-4', [
-            m('.checkbox', [
-              fields.useLoginAndColorInPads.label,
-              fields.useLoginAndColorInPads.icon
-            ])
-          ])
-        ])
-      );
-    } else if (!c.adminView()) {
-      var log = fields.login;
-      log.input.attrs.config = form.focusOnInit;
-      log.input.attrs.maxlength = 40;
-      requiredFields.splice(0, 0,
-        m('.form-group', [
-          log.label, log.icon,
-          m('.col-sm-7', [log.input])
-        ])
-      );
-    }
-    var USER = conf.LANG.USER;
-    var profOrAdm = (c.profileView() || c.adminView());
-    return m('form.form-horizontal', {
-      id: 'subscribe-form',
-      onsubmit: profOrAdm ? c.submit.profileSave : c.submit.subscribe
-      }, [
-      m('fieldset', [
-        m('legend', conf.LANG.USER.MANDATORY_FIELDS),
-        m('div', requiredFields)
-      ]),
-      m('fieldset', [
-        m('legend.opt', conf.LANG.USER.OPTIONAL_FIELDS),
-          m('.form-group', [
-            fields.firstname.label, fields.firstname.icon,
-            m('.col-sm-7', fields.firstname.input)
-          ]),
-          m('.form-group', [
-            fields.lastname.label, fields.lastname.icon,
-            m('.col-sm-7', fields.lastname.input)
-          ]),
-          m('.form-group', [
-            fields.organization.label, fields.organization.icon,
-            m('.col-sm-7', fields.organization.input)
-          ]),
-          m('.form-group', [
-            fields.color.label, fields.color.icon,
-            m('.col-sm-7', fields.color.input)
-          ])
-      ]),
-      m('.form-group', [
-        m('.col-sm-12', [
-          m('input.btn.btn-success pull-right', {
-            form: 'subscribe-form',
-            type: 'submit',
-            value: profOrAdm ? conf.LANG.ACTIONS.SAVE : USER.REGISTER
-          }),
-          c.profileView() ? view.removeAccount(c) : ''
-        ])
-      ])
-    ]);
   };
 
 
@@ -366,8 +238,6 @@ module.exports = (function () {
     if (c.profileView()) {
       elements.splice(0, 0, m('h2',
         conf.LANG.USER.PROFILE + ' : ' + auth.userInfo().login));
-    } else {
-      elements.splice(0, 0, m('h2', conf.LANG.USER.SUBSCRIBE));
     }
     return m('section', { class: 'user' }, elements);
   };
