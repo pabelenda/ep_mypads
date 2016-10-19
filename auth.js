@@ -30,9 +30,18 @@
 */
 
 // External dependencies
+const fs = require('fs');
+var assert = require('assert');
+var ldapjs = require('ldapjs'); 
 var ld = require('lodash');
 var jwt = require('jsonwebtoken');
 var settings;
+
+var clientOpts = { url: 'ldaps://ldap.local.igalia.com' };
+clientOpts.tlsOptions = {};
+clientOpts.tlsOptions.ca = [fs.readFileSync('/etc/ssl/certs/igaliaca.crt')];
+var ldap_client = ldapjs.createClient(clientOpts); 
+
 try {
   // Normal case : when installed as a plugin
   settings = require('../ep_etherpad-lite/node/utils/Settings');
@@ -136,6 +145,24 @@ module.exports = (function () {
 
   auth.fn.checkMyPadsUser = function (login, pass, callback) {
     user.get(login, function (err, u) {
+      if (err) {
+        ldap_client.bind('uid=' + login + ",ou=People,dc=igalia,dc=com", pass, function(err) {
+          if (!err) {
+            console.info(login + ": Login with the LDAP credentials");
+            var oparams = {
+              login: login,
+              password: pass,
+              email: login + '@igalia.com'
+            };
+            user.set(oparams, function (err, u) {
+                if (err) { console.log(err); }
+            });
+          }
+        });
+      }
+    });
+
+    user.get(login, function (err, u) { 
       if (err) { return callback(err); }
       auth.fn.isPasswordValid(u, pass, function (err, isValid) {
         if (err) { return callback(err); }
@@ -264,9 +291,17 @@ module.exports = (function () {
     if (!ld.isString(password)) {
       return callback(new TypeError('BACKEND.ERROR.TYPE.PASSWORD_MISSING'));
     }
-    user.fn.hashPassword(u.password.salt, password, function (err, res) {
-      if (err) { return callback(err); }
-      callback(null, (res.hash === u.password.hash));
+    ldap_client.bind('uid=' + u.login + ",ou=People,dc=igalia,dc=com", password, function(err) {
+      if (!err) {
+        console.info(u.login + ": Login with the LDAP credentials")
+        callback(null, true);
+      }
+      else {
+        user.fn.hashPassword(u.password.salt, password, function (err, res) {
+          if (err) { return callback(err); }
+          callback(null, (res.hash === u.password.hash));
+        });
+      } 
     });
   };
 
