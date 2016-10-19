@@ -181,7 +181,7 @@ module.exports = (function () {
         return (c.group.visibility && c.group.visibility === 'private');
       }
     })();
-    var showPass = (!c.isAdmin && isPrivate && !c.sendPass());
+    var showPass = (isPrivate && !c.sendPass());
     if (showPass) { return view.passForm(c); }
     var route = '/mypads/group/' + c.gid;
     var GROUP = conf.LANG.GROUP;
