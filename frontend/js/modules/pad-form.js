@@ -115,7 +115,7 @@ module.exports = (function () {
           model.groups(groups);
         }
         notif.success({ body: opts.successMsg });
-        m.route('/mypads/group/' + gkey + '/view');
+        m.route('/mypads/group/' + gkey + '/pad/view/' + resp.key);
       }, function (err) {
         notif.error({ body: ld.result(conf.LANG, err.error) });
       });
