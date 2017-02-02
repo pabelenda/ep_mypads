@@ -233,7 +233,7 @@ module.exports = (function () {
         ' '+conf.LANG.GROUP.PAD.ADD
       ])
     ]);
-    var moveView = m('p.text-center', [
+    var moveView = m('p.col-sm-6.text-center', [
       m('a.btn.btn-default', { href: route + '/pad/move', config: m.route }, [
         m('i.glyphicon.glyphicon-transfer'),
         ' '+conf.LANG.GROUP.PAD.MOVE
