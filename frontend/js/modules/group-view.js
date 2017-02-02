@@ -81,6 +81,7 @@ module.exports = (function () {
             return data.pads()[x];
           })), 'ctime');
         }
+        c.pads = ld.sortByOrder(c.pads, "ctime", 'desc');
         document.title = conf.LANG.GROUP.GROUP + ' ' + c.group.name +
           ' - ' + conf.SERVER.title;
       };
@@ -109,7 +110,7 @@ module.exports = (function () {
     */
 
     c.sortField = m.prop('ctime');
-    c.sortAsc = m.prop(true);
+    c.sortAsc = m.prop(false);
     c.sortBy = function (field) {
       if (c.sortField() === field) { c.sortAsc(!c.sortAsc()); }
       c.sortField(field);
